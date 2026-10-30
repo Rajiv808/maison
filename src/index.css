@@ -1,0 +1,84 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+/* Global settings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  background: #11100e;
+  color: #f5f0e8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: #11100e;
+  overflow-x: hidden;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Brand colors */
+::selection {
+  background: #c9a66b;
+  color: #11100e;
+}
+
+/* Reusable styles */
+.font-display {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.gold {
+  color: #c9a66b;
+}
+
+.gold-bg {
+  background-color: #c9a66b;
+}
+
+.container-custom {
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-padding {
+  padding: 120px 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .section-padding {
+    padding: 75px 0;
+  }
+}
