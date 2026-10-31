@@ -1,6 +1,5 @@
 
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import {
   ArrowDown,
@@ -118,22 +117,10 @@ export default function Hero() {
           </p>
 
           <div className="hero-actions mt-11 flex flex-col gap-4 opacity-0 sm:flex-row sm:items-center">
-            <Link
-              to="/menu"
-              className="group relative z-30 flex min-h-[60px] w-full items-center justify-center gap-5 bg-[#c9a66b] px-8 text-[11px] font-bold uppercase tracking-[0.18em] text-[#11100e] transition-all duration-300 hover:bg-[#f5f0e8] sm:w-auto sm:min-w-[245px]"
-            >
-              Explore Our Menu
-
-              <ArrowUpRight
-                size={18}
-                className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
-              />
-            </Link>
-
             <button
               type="button"
               onClick={handleReservation}
-              className="group relative z-30 flex min-h-[60px] w-full items-center justify-center gap-5 border border-[#c9a66b]/70 bg-black/20 px-8 text-[11px] font-bold uppercase tracking-[0.18em] text-[#f5f0e8] transition-all duration-300 hover:border-[#c9a66b] hover:bg-[#c9a66b] hover:text-[#11100e] sm:w-auto sm:min-w-[245px]"
+              className="group relative z-30 flex min-h-[60px] w-full items-center justify-center gap-5 bg-[#c9a66b] px-8 text-[11px] font-bold uppercase tracking-[0.18em] text-[#11100e] transition-all duration-300 hover:bg-[#f5f0e8] sm:w-auto sm:min-w-[245px]"
             >
               Reserve Your Table
 
