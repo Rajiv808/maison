@@ -5,165 +5,126 @@ import {
   ArrowDown,
   ArrowUpRight,
   Sparkles,
-  MoveRight,
 } from 'lucide-react';
-import { restaurantContact } from '../data/contact';
 
 export default function Hero() {
   const heroRef = useRef(null);
 
+  const handleReservation = () => {
+    window.dispatchEvent(new Event('open-reservation'));
+  };
+
+  const scrollToAbout = () => {
+    document.getElementById('about')?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  };
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       const timeline = gsap.timeline({
-        delay: 0.3,
         defaults: {
-          ease: 'power4.out',
+          ease: 'power3.out',
         },
       });
 
       timeline
         .fromTo(
           '.hero-eyebrow',
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 1 }
+          { y: 25, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8 }
         )
         .fromTo(
-          '.hero-heading-line',
-          { opacity: 0, y: 100, rotateX: 15 },
-          {
-            opacity: 1,
-            y: 0,
-            rotateX: 0,
-            duration: 1.2,
-            stagger: 0.15,
-          },
-          '-=0.6'
+          '.hero-title',
+          { y: 60, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1 },
+          '-=0.4'
         )
         .fromTo(
           '.hero-description',
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.9 },
-          '-=0.7'
-        )
-        .fromTo(
-          '.hero-actions',
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.9 },
+          { y: 25, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8 },
           '-=0.5'
         )
         .fromTo(
+          '.hero-actions',
+          { y: 25, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.8 },
+          '-=0.4'
+        )
+        .fromTo(
           '.hero-bottom',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          '-=0.3'
+          { opacity: 0 },
+          { opacity: 1, duration: 0.8 },
+          '-=0.2'
         );
 
-      gsap.to('.hero-background', {
-        scale: 1.12,
-        duration: 20,
-        ease: 'none',
-      });
-
       gsap.fromTo(
-        '.hero-gold-line',
-        { scaleX: 0 },
+        '.hero-background',
+        { scale: 1.12 },
         {
-          scaleX: 1,
-          duration: 1.5,
-          delay: 1,
-          transformOrigin: 'left',
-          ease: 'power3.inOut',
+          scale: 1,
+          duration: 2.5,
+          ease: 'power2.out',
         }
       );
-
-      gsap.to('.hero-orbit', {
-        rotate: 360,
-        duration: 35,
-        repeat: -1,
-        ease: 'none',
-      });
     }, heroRef);
 
     return () => ctx.revert();
   }, []);
 
-  const handleReservation = () => {
-    const message = encodeURIComponent(
-      'Hello Maison Noir! I would like to reserve a table. Please share the available slots.'
-    );
-
-    window.open(
-      `${restaurantContact.whatsappLink}?text=${message}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
-  };
-
   return (
     <section
       ref={heroRef}
       id="home"
-      className="relative flex h-screen min-h-[850px] items-center overflow-hidden bg-[#11100e]"
+      className="relative flex min-h-screen items-center overflow-hidden bg-[#11100e]"
     >
       <div
-        className="hero-background absolute inset-0 scale-100 bg-cover bg-center"
+        className="hero-background pointer-events-none absolute inset-0 scale-100 bg-cover bg-center"
         style={{
           backgroundImage: "url('/images/1.png')",
         }}
       />
 
-      <div className="absolute inset-0 bg-black/45" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#090807]/95 via-[#090807]/65 to-[#090807]/15" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#11100e] via-transparent to-black/40" />
+      <div className="pointer-events-none absolute inset-0 bg-black/45" />
 
-      <div className="absolute right-[-140px] top-[15%] hidden h-[450px] w-[450px] rounded-full border border-[#c9a66b]/10 lg:block">
-        <div className="hero-orbit absolute left-0 top-1/2 h-3 w-3 rounded-full bg-[#c9a66b] shadow-[0_0_25px_#c9a66b]" />
-      </div>
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#090807]/95 via-[#090807]/65 to-[#090807]/15" />
 
-      <div className="container-custom relative z-10 pb-24 pt-36">
-        <div className="max-w-6xl">
-          <div className="hero-eyebrow mb-9 flex items-center gap-4">
-            <Sparkles size={17} className="text-[#c9a66b]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#11100e] via-transparent to-black/40" />
 
-            <span className="text-[10px] font-semibold uppercase tracking-[0.45em] text-[#d8b77e] sm:text-xs">
+      <div className="container-custom relative z-20 pb-24 pt-36">
+        <div className="max-w-5xl">
+          <div className="hero-eyebrow mb-8 flex items-center gap-4 opacity-0">
+            <span className="h-px w-12 bg-[#c9a66b]" />
+
+            <span className="text-[10px] font-semibold uppercase tracking-[0.4em] text-[#c9a66b] sm:text-xs">
               Welcome to Maison Noir
             </span>
 
-            <span className="h-px w-12 bg-[#c9a66b]/70" />
+            <Sparkles size={15} className="text-[#c9a66b]" />
           </div>
 
-          <h1 className="font-display text-[clamp(4rem,9vw,9rem)] font-medium leading-[0.82] tracking-[-0.045em] text-[#f5f0e8]">
-            <span className="hero-heading-line block">
-              Where Taste
-            </span>
-
-            <span className="hero-heading-line mt-3 block italic text-[#c9a66b]">
-              Becomes
-            </span>
-
-            <span className="hero-heading-line mt-3 block">
-              An Art<span className="text-[#c9a66b]">.</span>
-            </span>
+          <h1 className="hero-title max-w-5xl font-display text-6xl font-medium leading-[0.95] tracking-tight text-[#f5f0e8] opacity-0 sm:text-7xl md:text-8xl lg:text-[110px]">
+            Where Taste
+            <br />
+            Becomes <span className="italic text-[#c9a66b]">An Art.</span>
           </h1>
 
-          <div className="hero-gold-line mt-10 h-px w-40 bg-gradient-to-r from-[#c9a66b] to-transparent" />
-
-          <p className="hero-description mt-8 max-w-lg text-base leading-8 text-white/75 sm:text-lg">
-            An extraordinary celebration of culinary artistry,
-            exceptional flavours and timeless elegance.
-            Experience dining beyond the ordinary.
+          <p className="hero-description mt-8 max-w-xl text-sm leading-8 text-white/65 opacity-0 sm:text-base">
+            Discover an extraordinary dining experience where exquisite
+            flavours, refined elegance and unforgettable moments come
+            together.
           </p>
 
-          <div className="hero-actions mt-12 flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-6">
+          <div className="hero-actions mt-11 flex flex-col gap-4 opacity-0 sm:flex-row sm:items-center">
             <a
               href="/menu"
-              className="group flex min-h-[72px] w-full items-center justify-center gap-8 border-2 border-[#c9a66b] bg-[#c9a66b] px-9 text-sm font-extrabold uppercase tracking-[0.16em] text-[#11100e] shadow-[0_12px_45px_rgba(201,166,107,0.3)] transition-all duration-300 hover:-translate-y-1 hover:border-[#f5f0e8] hover:bg-[#f5f0e8] hover:shadow-[0_18px_55px_rgba(201,166,107,0.35)] sm:w-auto sm:min-w-[265px] sm:px-10"
+              className="group relative z-30 flex min-h-[60px] w-full items-center justify-center gap-5 bg-[#c9a66b] px-8 text-[11px] font-bold uppercase tracking-[0.18em] text-[#11100e] transition-all duration-300 hover:bg-[#f5f0e8] sm:w-auto sm:min-w-[245px]"
             >
               Explore Our Menu
 
               <ArrowUpRight
-                size={23}
-                strokeWidth={2.5}
+                size={18}
                 className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
               />
             </a>
@@ -171,51 +132,54 @@ export default function Hero() {
             <button
               type="button"
               onClick={handleReservation}
-              className="group flex min-h-[72px] w-full items-center justify-center gap-8 border-2 border-[#f5f0e8]/80 bg-[#11100e]/75 px-9 text-sm font-extrabold uppercase tracking-[0.16em] text-[#f5f0e8] shadow-[0_12px_35px_rgba(0,0,0,0.3)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:border-[#c9a66b] hover:bg-[#c9a66b] hover:text-[#11100e] sm:w-auto sm:min-w-[265px] sm:px-10"
+              className="group relative z-30 flex min-h-[60px] w-full items-center justify-center gap-5 border border-[#c9a66b]/70 bg-black/20 px-8 text-[11px] font-bold uppercase tracking-[0.18em] text-[#f5f0e8] transition-all duration-300 hover:border-[#c9a66b] hover:bg-[#c9a66b] hover:text-[#11100e] sm:w-auto sm:min-w-[245px]"
             >
               Reserve Your Table
 
-              <MoveRight
-                size={23}
-                strokeWidth={2.5}
-                className="transition-transform duration-300 group-hover:translate-x-2"
+              <ArrowUpRight
+                size={18}
+                className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
               />
             </button>
           </div>
         </div>
       </div>
 
-      <div className="hero-bottom absolute bottom-10 left-0 z-10 w-full">
+      <div className="hero-bottom pointer-events-none absolute bottom-10 left-0 z-20 hidden w-full opacity-0 md:block">
         <div className="container-custom flex items-end justify-between">
-          <a
-            href="#about"
-            className="group flex items-center gap-4 text-white/65 transition-colors duration-300 hover:text-[#c9a66b]"
-          >
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 transition-all duration-300 group-hover:border-[#c9a66b]">
-              <ArrowDown
-                size={19}
-                className="text-[#c9a66b] transition-transform duration-300 group-hover:translate-y-1"
-              />
-            </span>
-
-            <span className="text-[10px] font-semibold uppercase tracking-[0.3em]">
-              Discover Our Story
-            </span>
-          </a>
-
-          <div className="hidden text-right sm:block">
-            <p className="text-[10px] font-medium uppercase tracking-[0.35em] text-white/50">
-              Located in
+          <div>
+            <p className="text-[9px] uppercase tracking-[0.3em] text-white/40">
+              An extraordinary dining experience
             </p>
 
-            <p className="mt-2 font-display text-2xl italic text-[#c9a66b]">
-              Kolkata, India
+            <p className="mt-2 font-display text-xl italic text-[#c9a66b]">
+              Crafted with passion. Served with elegance.
             </p>
           </div>
+
+          <button
+            type="button"
+            onClick={scrollToAbout}
+            className="pointer-events-auto group flex items-center gap-4 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/60 transition-colors hover:text-[#c9a66b]"
+          >
+            Discover More
+
+            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 transition-all duration-300 group-hover:border-[#c9a66b] group-hover:bg-[#c9a66b] group-hover:text-[#11100e]">
+              <ArrowDown size={17} />
+            </span>
+          </button>
         </div>
       </div>
 
-      <div className="pointer-events-none absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#c9a66b]/40 to-transparent" />
+      <div className="pointer-events-none absolute right-8 top-1/2 z-10 hidden -translate-y-1/2 rotate-90 lg:block">
+        <div className="flex items-center gap-4">
+          <span className="h-px w-12 bg-[#c9a66b]/50" />
+
+          <span className="text-[9px] uppercase tracking-[0.4em] text-white/35">
+            Fine Dining · Kolkata
+          </span>
+        </div>
+      </div>
     </section>
   );
 }

@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   X,
@@ -22,7 +22,36 @@ export default function Reservation() {
     guests: '2',
   });
 
+  useEffect(() => {
+    const handleOpenReservation = () => {
+      setIsOpen(true);
+    };
+
+    window.addEventListener('open-reservation', handleOpenReservation);
+
+    return () => {
+      window.removeEventListener('open-reservation', handleOpenReservation);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
+
   const today = new Date();
+
   const minimumDate = new Date(
     today.getTime() - today.getTimezoneOffset() * 60000
   ).toISOString().split('T')[0];
@@ -51,12 +80,14 @@ export default function Reservation() {
       'Please confirm my reservation. Thank you!',
     ].join('\n');
 
-    window.open(
-      `${restaurantContact.whatsappLink}?text=${encodeURIComponent(message)}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
+    const whatsappUrl = `${restaurantContact.whatsappLink}?text=${encodeURIComponent(message)}`;
 
+    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+
+    setIsOpen(false);
+  };
+
+  const closeReservation = () => {
     setIsOpen(false);
   };
 
@@ -72,7 +103,7 @@ export default function Reservation() {
         id="reservation"
         className="relative overflow-hidden bg-[#15130f] px-5 py-28 text-center sm:py-36"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,166,107,0.12),transparent_65%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,166,107,0.12),transparent_65%)]" />
 
         <div className="container-custom relative z-10">
           <p className="mb-7 text-xs font-semibold uppercase tracking-[0.45em] text-[#c9a66b]">
@@ -93,10 +124,12 @@ export default function Reservation() {
           </p>
 
           <button
+            type="button"
             onClick={() => setIsOpen(true)}
             className="group mt-12 inline-flex min-h-[76px] items-center justify-center gap-7 bg-[#c9a66b] px-14 text-sm font-extrabold uppercase tracking-[0.2em] text-[#11100e] shadow-[0_12px_40px_rgba(201,166,107,0.18)] transition-all duration-500 hover:-translate-y-1 hover:bg-[#f5f0e8] hover:shadow-[0_18px_50px_rgba(201,166,107,0.25)] sm:px-20"
           >
             Book a Table
+
             <ArrowUpRight
               size={23}
               className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -113,7 +146,7 @@ export default function Reservation() {
             exit={{ opacity: 0 }}
             onMouseDown={(event) => {
               if (event.target === event.currentTarget) {
-                setIsOpen(false);
+                closeReservation();
               }
             }}
             className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/85 px-4 py-6 backdrop-blur-md sm:px-6"
@@ -130,7 +163,7 @@ export default function Reservation() {
             >
               <button
                 type="button"
-                onClick={() => setIsOpen(false)}
+                onClick={closeReservation}
                 aria-label="Close reservation form"
                 className="absolute right-6 top-6 flex h-11 w-11 items-center justify-center border border-white/15 text-white/70 transition-all hover:border-[#c9a66b] hover:bg-[#c9a66b] hover:text-[#11100e]"
               >
@@ -159,11 +192,12 @@ export default function Reservation() {
 
               <form onSubmit={handleSubmit} className="space-y-7">
                 <div>
-                  <label className={labelClass}>
+                  <label htmlFor="reservation-name" className={labelClass}>
                     Full Name
                   </label>
 
                   <input
+                    id="reservation-name"
                     type="text"
                     name="name"
                     value={form.name}
@@ -176,11 +210,12 @@ export default function Reservation() {
                 </div>
 
                 <div>
-                  <label className={labelClass}>
+                  <label htmlFor="reservation-phone" className={labelClass}>
                     Phone Number
                   </label>
 
                   <input
+                    id="reservation-phone"
                     type="tel"
                     name="phone"
                     value={form.phone}
@@ -195,7 +230,7 @@ export default function Reservation() {
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div>
-                    <label className={labelClass}>
+                    <label htmlFor="reservation-date" className={labelClass}>
                       <span className="flex items-center gap-2">
                         <CalendarDays size={16} className="text-[#c9a66b]" />
                         Reservation Date
@@ -203,6 +238,7 @@ export default function Reservation() {
                     </label>
 
                     <input
+                      id="reservation-date"
                       type="date"
                       name="date"
                       value={form.date}
@@ -214,7 +250,7 @@ export default function Reservation() {
                   </div>
 
                   <div>
-                    <label className={labelClass}>
+                    <label htmlFor="reservation-time" className={labelClass}>
                       <span className="flex items-center gap-2">
                         <Clock size={16} className="text-[#c9a66b]" />
                         Preferred Time
@@ -222,6 +258,7 @@ export default function Reservation() {
                     </label>
 
                     <input
+                      id="reservation-time"
                       type="time"
                       name="time"
                       value={form.time}
@@ -233,7 +270,7 @@ export default function Reservation() {
                 </div>
 
                 <div>
-                  <label className={labelClass}>
+                  <label htmlFor="reservation-guests" className={labelClass}>
                     <span className="flex items-center gap-2">
                       <Users size={16} className="text-[#c9a66b]" />
                       Number of Guests
@@ -241,6 +278,7 @@ export default function Reservation() {
                   </label>
 
                   <select
+                    id="reservation-guests"
                     name="guests"
                     value={form.guests}
                     onChange={handleChange}
@@ -260,6 +298,7 @@ export default function Reservation() {
                 >
                   <MessageCircle size={21} />
                   Send Reservation Request
+
                   <ArrowUpRight
                     size={20}
                     className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"

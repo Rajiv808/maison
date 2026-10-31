@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ArrowUpRight, Sparkles } from 'lucide-react';
-import { restaurantContact } from '../data/contact';
 
 const navLinks = [
   { name: 'Home', href: '#home' },
@@ -26,16 +25,7 @@ export default function Navbar() {
   };
 
   const handleReservation = () => {
-    const message = encodeURIComponent(
-      'Hello Maison Noir! I would like to reserve a table. Please share the available slots.'
-    );
-
-    window.open(
-      `${restaurantContact.whatsappLink}?text=${message}`,
-      '_blank',
-      'noopener,noreferrer'
-    );
-
+    window.dispatchEvent(new Event('open-reservation'));
     setOpen(false);
   };
 
@@ -44,7 +34,6 @@ export default function Navbar() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full border-b border-white/[0.08] bg-[#11100e]/85 shadow-[0_8px_40px_rgba(0,0,0,0.15)] backdrop-blur-2xl">
       <nav className="container-custom flex h-[82px] items-center justify-between">
-
         <Link
           to="/"
           onClick={closeMenu}
@@ -67,7 +56,6 @@ export default function Navbar() {
               className="group relative py-3 text-[11px] font-medium uppercase tracking-[0.18em] text-white/65 transition-colors duration-300 hover:text-[#c9a66b]"
             >
               {link.name}
-
               <span className="absolute bottom-0 left-0 h-px w-0 bg-[#c9a66b] transition-all duration-500 group-hover:w-full" />
             </a>
           ))}
@@ -89,13 +77,11 @@ export default function Navbar() {
           </Link>
 
           <button
+            type="button"
             onClick={handleReservation}
             className="group relative flex min-h-12 items-center gap-4 overflow-hidden bg-[#c9a66b] px-7 text-[10px] font-bold uppercase tracking-[0.18em] text-[#11100e] transition-all duration-500 hover:bg-[#f5f0e8]"
           >
-            <span className="relative z-10">
-              Reserve a Table
-            </span>
-
+            <span className="relative z-10">Reserve a Table</span>
             <ArrowUpRight
               size={17}
               className="relative z-10 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -104,6 +90,7 @@ export default function Navbar() {
         </div>
 
         <button
+          type="button"
           onClick={() => setOpen(!open)}
           className="flex h-12 w-12 items-center justify-center border border-[#c9a66b]/40 text-[#c9a66b] transition-all duration-300 hover:bg-[#c9a66b] hover:text-[#11100e] xl:hidden"
           aria-label={open ? 'Close navigation' : 'Open navigation'}
@@ -115,13 +102,11 @@ export default function Navbar() {
 
       <div
         className={`absolute left-0 top-full w-full overflow-hidden border-b border-[#c9a66b]/20 bg-[#11100e] shadow-2xl transition-all duration-500 xl:hidden ${
-          open
-            ? 'max-h-[550px] opacity-100'
-            : 'max-h-0 opacity-0'
+          open ? 'max-h-[550px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
         <div className="container-custom flex flex-col gap-2 py-7">
-          {navLinks.map((link, index) => (
+          {navLinks.map((link) => (
             <a
               key={link.name}
               href={getLink(link.href)}
@@ -144,6 +129,7 @@ export default function Navbar() {
           </Link>
 
           <button
+            type="button"
             onClick={handleReservation}
             className="mt-3 flex min-h-14 items-center justify-center gap-4 bg-[#c9a66b] px-6 text-xs font-bold uppercase tracking-[0.2em] text-[#11100e] transition-all duration-300 hover:bg-[#f5f0e8]"
           >
